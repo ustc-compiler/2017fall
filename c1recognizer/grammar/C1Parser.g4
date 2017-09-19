@@ -13,9 +13,9 @@ stmt: ;
 lval: ;
 cond: ;
 exp:
-    exp (Multiply | Divide | Modulo) exp
+    (Plus | Minus) exp
+    | exp (Multiply | Divide | Modulo) exp
     | exp (Plus | Minus) exp
-    | (Plus | Minus) exp
     | LeftParen exp RightParen
     | Number
 ;
