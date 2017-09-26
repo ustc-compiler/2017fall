@@ -6,8 +6,9 @@ Plus: '+';
 Multiply: '*';
 WhiteSpace: [ \t\n\r]+ -> skip;
 
-expr: expr Multiply expr
-    | expr Plus expr
-    | '(' expr ')'
-    | Identifier
-    | Number;
+expr: expr Multiply expr # Mult
+    | expr Plus expr # Plus
+    | '(' expr ')' # Brac
+    | Identifier # Id
+    | Number # Num
+    ;
