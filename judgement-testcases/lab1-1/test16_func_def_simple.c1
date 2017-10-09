@@ -1,0 +1,6 @@
+int func_sort();
+
+void main()
+{
+  func_sort();
+}

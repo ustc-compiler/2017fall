@@ -1,0 +1,6 @@
+int func_sort(int a, int b);
+
+void main(int param1, int param2)
+{
+  func_sort(param1, param2);
+}
