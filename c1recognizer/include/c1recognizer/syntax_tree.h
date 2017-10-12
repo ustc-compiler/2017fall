@@ -67,25 +67,29 @@ struct while_stmt_syntax;
 
 struct syntax_tree_visitor;
 
+// Virtual base of all kinds of syntax tree nodes.
 struct syntax_tree_node
 {
     int line;
     int pos;
+    // Used in syntax_tree_visitor. Irrelevant to syntax tree generation.
     virtual void accept(syntax_tree_visitor &visitor) = 0;
 };
 
+// Root node of an ordinary syntax tree.
 struct assembly : syntax_tree_node
 {
-    std::string source_name;
     ptr_list<global_def_syntax> global_defs;
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Virtual base of lobal definitions, function or variable one.
 struct global_def_syntax : virtual syntax_tree_node
 {
     virtual void accept(syntax_tree_visitor &visitor) override = 0;
 };
 
+// Function definition.
 struct func_def_syntax : global_def_syntax
 {
     std::string name;
@@ -93,6 +97,7 @@ struct func_def_syntax : global_def_syntax
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Condition expression. (Not actually treated as expression, enough for C1)
 struct cond_syntax : syntax_tree_node
 {
     relop op;
@@ -100,11 +105,13 @@ struct cond_syntax : syntax_tree_node
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Virtual base of expressions.
 struct expr_syntax : virtual syntax_tree_node
 {
     virtual void accept(syntax_tree_visitor &visitor) = 0;
 };
 
+// Expression like `lhs op rhs`.
 struct binop_expr_syntax : expr_syntax
 {
     binop op;
@@ -112,6 +119,7 @@ struct binop_expr_syntax : expr_syntax
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Expression like `op rhs`.
 struct unaryop_expr_syntax : expr_syntax
 {
     unaryop op;
@@ -119,6 +127,7 @@ struct unaryop_expr_syntax : expr_syntax
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Expression like `ident` or `ident[exp]`.
 struct lval_syntax : expr_syntax
 {
     std::string name;
@@ -126,17 +135,21 @@ struct lval_syntax : expr_syntax
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Expression constructed by a literal number.
 struct literal_syntax : expr_syntax
 {
     int number;
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Virtual base for statements.
 struct stmt_syntax : virtual syntax_tree_node
 {
     virtual void accept(syntax_tree_visitor &visitor) = 0;
 };
 
+// Variable definition. Multiple of this would be both a statement and a global definition; however, itself only
+// represents a single variable definition.
 struct var_def_stmt_syntax : stmt_syntax, global_def_syntax
 {
     bool is_constant;
@@ -146,6 +159,7 @@ struct var_def_stmt_syntax : stmt_syntax, global_def_syntax
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Assignment statement.
 struct assign_stmt_syntax : stmt_syntax
 {
     ptr<lval_syntax> target;
@@ -153,18 +167,21 @@ struct assign_stmt_syntax : stmt_syntax
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Function call statement.
 struct func_call_stmt_syntax : stmt_syntax
 {
     std::string name;
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Block statement.
 struct block_syntax : stmt_syntax
 {
     ptr_list<stmt_syntax> body;
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// If statement.
 struct if_stmt_syntax : stmt_syntax
 {
     ptr<cond_syntax> pred;
@@ -173,6 +190,7 @@ struct if_stmt_syntax : stmt_syntax
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// While statement.
 struct while_stmt_syntax : stmt_syntax
 {
     ptr<cond_syntax> pred;
@@ -180,6 +198,7 @@ struct while_stmt_syntax : stmt_syntax
     virtual void accept(syntax_tree_visitor &visitor) override final;
 };
 
+// Empty statement (aka a single ';').
 struct empty_stmt_syntax : stmt_syntax
 {
     virtual void accept(syntax_tree_visitor &visitor) override final;
