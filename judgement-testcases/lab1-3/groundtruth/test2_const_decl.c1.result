@@ -1,0 +1,46 @@
+{
+    "type": "assembly",
+    "line": 1,
+    "pos": 0,
+    "global_defs": [
+        {
+            "type": "var_def_stmt_syntax",
+            "line": 1,
+            "pos": 10,
+            "is_const": true,
+            "name": "c1",
+            "vardef_initializer": {
+                "type": "literal_syntax",
+                "line": 1,
+                "pos": 15,
+                "value": 3
+            }
+        },
+        {
+            "type": "var_def_stmt_syntax",
+            "line": 2,
+            "pos": 10,
+            "is_const": true,
+            "name": "c2",
+            "vardef_initializer": {
+                "type": "literal_syntax",
+                "line": 2,
+                "pos": 15,
+                "value": 1
+            }
+        },
+        {
+            "type": "var_def_stmt_syntax",
+            "line": 2,
+            "pos": 18,
+            "is_const": true,
+            "name": "c3",
+            "vardef_initializer": {
+                "type": "literal_syntax",
+                "line": 2,
+                "pos": 23,
+                "value": 1193046
+            }
+        }
+    ]
+}
