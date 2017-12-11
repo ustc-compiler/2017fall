@@ -1,0 +1,7 @@
+const a = 0;
+const int b = 0;
+
+void main() {
+    const aa = 0;
+    const int bb = 0;
+}
